@@ -3,9 +3,9 @@ services:
   - docker
 env:
   global:
-    - SHA=$(git rev-parse HEAD) # determine the current commit SHA and assign it to the environment variable SHA, which is used in deploy.sh for the unique version name of docker image
-    - CLOUDSDK_CORE_DISABLE_PROMPTS=1 # make sure gcloud doesn't prompt for user input
-    before_install:
+    - SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+before_install:
   - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d
   - curl https://sdk.cloud.google.com | bash > /dev/null;
   - source $HOME/google-cloud-sdk/path.bash.inc
@@ -21,7 +21,7 @@ script:
   - docker run -e CI=true guanxin43/react-test npm test
 
 deploy:
-  provider: script # run a script file specified below for deployment
-  script: bash ./deploy.sh # specify the command to run the script file
-    on:
-      branch: master # only work on the branch master
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
